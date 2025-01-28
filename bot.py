@@ -170,7 +170,15 @@ class DePINed:
             "User-Agent": FakeUserAgent().random
         }
         try:
-            response = requests.post(url=url, headers=headers, data=data, proxy=proxy, timeout=60, impersonate="safari15_5")
+            proxies = {"http": proxy, "https": proxy} if proxy else None
+            response = requests.post(
+                url=url, 
+                headers=headers, 
+                data=data, 
+                proxies=proxies, 
+                timeout=60, 
+                impersonate="safari15_5"
+            )
             response.raise_for_status()
             result = response.json()
             return result['data']['token']
@@ -186,7 +194,14 @@ class DePINed:
         }
         for attempt in range(retries):
             try:
-                response = requests.get(url=url, headers=headers, proxy=proxy, timeout=60, impersonate="safari15_5")
+                proxies = {"http": proxy, "https": proxy} if proxy else None
+                response = requests.get(
+                    url=url, 
+                    headers=headers, 
+                    proxies=proxies, 
+                    timeout=60, 
+                    impersonate="safari15_5"
+                )
                 if response.status_code == 401:
                     token = self.get_access_token(email, password, use_proxy)
                     headers["Authorization"] = f"Bearer {token}"
@@ -213,7 +228,15 @@ class DePINed:
         }
         for attempt in range(retries):
             try:
-                response = requests.post(url=url, headers=headers, data=data, proxy=proxy, timeout=60, impersonate="safari15_5")
+                proxies = {"http": proxy, "https": proxy} if proxy else None
+                response = requests.post(
+                    url=url, 
+                    headers=headers, 
+                    data=data, 
+                    proxies=proxies, 
+                    timeout=60, 
+                    impersonate="safari15_5"
+                )
                 if response.status_code == 401:
                     token = self.get_access_token(email, password, use_proxy)
                     headers["Authorization"] = f"Bearer {token}"
