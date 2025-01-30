@@ -227,28 +227,7 @@ class Register:
                 print(f"{Fore.CYAN}Using proxy: {self.current_proxy}{Style.RESET_ALL}")
                 print(f"{Fore.CYAN}Trying to register email: {account['email']}{Style.RESET_ALL}")
                 
-                reg_response = None
-                retry_count = 0
-                while not reg_response or (not isinstance(reg_response, str) and not reg_response.get('data', {}).get('token')):
-                    reg_response = self.register_user(account['email'], account['password'])
-                    if reg_response == "need_confirm":
-                        print(f"{Fore.YELLOW}Account needs confirmation, skipping to next account...{Style.RESET_ALL}")
-                        break
-                    if not reg_response:
-                        retry_count += 1
-                        if retry_count >= 3:  # Limit retries
-                            print(f"{Fore.RED}Max retries reached for registration, skipping account{Style.RESET_ALL}")
-                            break
-                        print(f"{Fore.YELLOW}Failed To Register, Retrying... ({retry_count}/3){Style.RESET_ALL}")
-                        await asyncio.sleep(3)
-
-                # Check if we got a string response (need_confirm) or no response
-                if isinstance(reg_response, str) or not reg_response:
-                    continue  # Skip to next account
-
-                # Now we know reg_response is a dict with data
-                token = reg_response['data']['token']
-
+              
                 # Add login step before profile creation
                 login_response = None
                 retry_count = 0
